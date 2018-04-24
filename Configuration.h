@@ -312,27 +312,11 @@
                                   // is more than PID_FUNCTIONAL_RANGE then the PID will be shut off and the heater will be set to min/max.
   #define K1 0.95 //smoothing factor within the PID
 
-  // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
-  // Ultimaker
-  //#define  DEFAULT_Kp 22.2
-  //#define  DEFAULT_Ki 1.08
-  //#define  DEFAULT_Kd 114
-
-  // MakerGear
-  //#define  DEFAULT_Kp 7.0
-  //#define  DEFAULT_Ki 0.1
-  //#define  DEFAULT_Kd 12
-
-  // Mendel Parts V9 on 12V
-  //#define  DEFAULT_Kp 63.0
-  //#define  DEFAULT_Ki 2.25
-  //#define  DEFAULT_Kd 440
-
-  // ANET A8 Standard Extruder at 210 Degree Celsius and 100% Fan
+  // ANET A8 V6 extruder at 200 Degree Celsius, fan at 100%
   //(measured after M106 S255 with M303 E0 S210 C8)
-  #define  DEFAULT_Kp 21.0
-  #define  DEFAULT_Ki 1.25
-  #define  DEFAULT_Kd 86.0
+  #define  DEFAULT_Kp 10.67
+  #define  DEFAULT_Ki 0.52
+  #define  DEFAULT_Kd 53.47
 
 #endif // PIDTEMP
 
@@ -348,9 +332,9 @@
 // If your configuration is significantly different than this and you don't understand the issues involved, you probably
 // shouldn't use bed PID until someone else verifies your hardware works.
 // If this is enabled, find your own PID constants below.
-//#define PIDTEMPBED
+#define PIDTEMPBED
 
-#define BED_LIMIT_SWITCHING
+//#define BED_LIMIT_SWITCHING
 
 // This sets the max power delivered to the bed, and replaces the HEATER_BED_DUTY_CYCLE_DIVIDER option.
 // all forms of bed control obey this (PID, bang-bang, bang-bang with hysteresis)
@@ -361,20 +345,12 @@
 #if ENABLED(PIDTEMPBED)
 
   //#define PID_BED_DEBUG // Sends debug data to the serial port.
-
-  //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-  //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  #define  DEFAULT_bedKp 10.00
-  #define  DEFAULT_bedKi .023
-  #define  DEFAULT_bedKd 305.4
-
-  //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-  //from pidautotune
-  //#define  DEFAULT_bedKp 97.1
-  //#define  DEFAULT_bedKi 1.41
-  //#define  DEFAULT_bedKd 1675.16
-
-  // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
+  //EDITED
+  //Anet A8 stock bed
+  #define  DEFAULT_bedKp 284.51
+  #define  DEFAULT_bedKi 37.02
+  #define  DEFAULT_bedKd 546.58
+  
 #endif // PIDTEMPBED
 
 // @section extruder
@@ -492,7 +468,8 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {100,  100, 400, 95}
+//EDITED
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {100,  80, 400, 97}
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -585,10 +562,10 @@
 //    O-- FRONT --+
 //  (0,0)
 
-
-#define X_PROBE_OFFSET_FROM_EXTRUDER -22  // X offset: -left  +right  [of the nozzle]
-#define Y_PROBE_OFFSET_FROM_EXTRUDER -36  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER 0   // Z offset: -below +above  [the nozzle]
+//EDITED
+#define X_PROBE_OFFSET_FROM_EXTRUDER -27    // X offset: -left  +right  [of the nozzle]
+#define Y_PROBE_OFFSET_FROM_EXTRUDER 9      // Y offset: -front +behind [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.7   // Z offset: -below +above  [the nozzle]
 
 
 // X and Y axis travel speed (mm/m) between probes
@@ -596,7 +573,7 @@
 // Speed for the first approach when double-probing (with PROBE_DOUBLE_TOUCH)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
 // Speed for the "accurate" probe of each point
-#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 2)
+#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 3)
 // Use double touch for probing
 #define PROBE_DOUBLE_TOUCH
 
@@ -664,8 +641,9 @@
  * Example: `M851 Z-5` with a CLEARANCE of 4  =>  9mm from bed to nozzle.
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
-#define Z_CLEARANCE_DEPLOY_PROBE   10 // Z Clearance for Deploy/Stow
-#define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
+//EDITED
+#define Z_CLEARANCE_DEPLOY_PROBE   5 // Z Clearance for Deploy/Stow
+#define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
 
 //
 // For M851 give a range for adjusting the Z probe offset
@@ -726,7 +704,7 @@
 // @section machine
 
 // Travel limits after homing (units are in mm)
-#define X_MAX_POS     220
+#define X_MAX_POS     230
 #define X_MIN_POS     -33
 #define Y_MAX_POS     220
 #define Y_MIN_POS     -10
@@ -815,14 +793,14 @@
 #if ENABLED(AUTO_BED_LEVELING_LINEAR) || ENABLED(AUTO_BED_LEVELING_BILINEAR)
 
   // Set the number of grid points per dimension.
-  #define ABL_GRID_MAX_POINTS_X 3
+  #define ABL_GRID_MAX_POINTS_X 2
   #define ABL_GRID_MAX_POINTS_Y ABL_GRID_MAX_POINTS_X
-
+  //EDITED
   // Set the boundaries for probing (where the probe can reach).
-  #define LEFT_PROBE_BED_POSITION 20
-  #define RIGHT_PROBE_BED_POSITION 195
-  #define FRONT_PROBE_BED_POSITION 20
-  #define BACK_PROBE_BED_POSITION 170
+  #define LEFT_PROBE_BED_POSITION 25
+  #define RIGHT_PROBE_BED_POSITION 203
+  #define FRONT_PROBE_BED_POSITION 15
+  #define BACK_PROBE_BED_POSITION 203
 
   // The Z probe minimum outer margin (to validate G29 parameters).
   #define MIN_PROBE_EDGE 10
@@ -876,8 +854,9 @@
 
 // Manually set the home position. Leave these undefined for automatic settings.
 // For DELTA this is the top-center of the Cartesian print volume.
-//#define MANUAL_X_HOME_POS 0
-//#define MANUAL_Y_HOME_POS 0
+//EDITED
+#define MANUAL_X_HOME_POS -17
+#define MANUAL_Y_HOME_POS -14
 //#define MANUAL_Z_HOME_POS 0 // Distance between the nozzle to printbed after homing
 
 // Use "Z Safe Homing" to avoid homing with a Z probe outside the bed area.
@@ -897,7 +876,7 @@
 
 // Homing speeds (mm/m)
 #define HOMING_FEEDRATE_XY (50*60)
-#define HOMING_FEEDRATE_Z  (6*60)
+#define HOMING_FEEDRATE_Z  (5*60)
 
 //=============================================================================
 //============================= Additional Features ===========================
@@ -913,7 +892,7 @@
 // M501 - reads parameters from EEPROM (if you need reset them after you changed them temporarily).
 // M502 - reverts to the default "factory settings".  You still need to store them in EEPROM afterwards if you want to.
 //define this to enable EEPROM support
-#define EEPROM_SETTINGS
+//#define EEPROM_SETTINGS
 
 #if ENABLED(EEPROM_SETTINGS)
   // To disable EEPROM Serial responses and decrease program space by ~1700 byte: comment this out:
